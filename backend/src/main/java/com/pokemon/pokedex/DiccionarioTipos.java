@@ -40,4 +40,12 @@ public enum DiccionarioTipos {
         }
         return ingles.substring(0, 1).toUpperCase() + ingles.substring(1);
     }
+
+    public static java.util.Map<String, String> getTraduccionesMap() {
+        java.util.Map<String, String> map = new java.util.HashMap<>();
+        for (DiccionarioTipos t : values()) {
+            map.put(t.getIngles(), t.getEspanol());
+        }
+        return map;
+    }
 }

@@ -1,14 +1,12 @@
 package com.pokemon.pokedex;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/pokemon")
-@CrossOrigin(origins = "*") // Permitimos a Angular interactuar con esta API
+@CrossOrigin(origins = "*")
 public class ControladorPokemon {
 
     private final ServicioPokemon servicioPokemon;
@@ -22,8 +20,13 @@ public class ControladorPokemon {
         return servicioPokemon.obtenerPokemonPorNombre(identificador);
     }
 
+    @GetMapping("/{identificador}/movimientos")
+    public Map<String, List<ModeloMovimiento>> obtenerMovimientos(@PathVariable String identificador) {
+        return servicioPokemon.obtenerMovimientos(identificador);
+    }
+
     @GetMapping("/generacion/{idGen}")
-    public java.util.List<MiniPokemon> obtenerGeneracion(@PathVariable Integer idGen) {
+    public List<MiniPokemon> obtenerGeneracion(@PathVariable Integer idGen) {
         return servicioPokemon.obtenerGeneracion(idGen);
     }
 }

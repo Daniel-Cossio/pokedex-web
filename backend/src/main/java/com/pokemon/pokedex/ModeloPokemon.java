@@ -11,27 +11,37 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ModeloPokemon {
-    // Básicos
+    // ── Básicos ──────────────────────────────────────────────────────
     private Integer id;
     private String nombre;
     private String imagen;
-    private Double altura; // Transformado a Metros
-    private Double peso;   // Transformado a kg
-    
-    // Tipos interactivos (Español para texto, Inglés para CSS)
+    private Double altura;
+    private Double peso;
+
+    // ── Tipos ────────────────────────────────────────────────────────
     private List<String> tiposEspanol;
     private List<String> tiposOriginales;
-    
-    // Enciclopedia Stats (Extension Pro)
-    private List<String> habilidades;
-    private Map<String, Integer> estadisticasBase; // {"Salud": 45, "Ataque": 49...}
-    
-    // Datos de la Especie (-species logic)
+
+    // ── Estadísticas de combate ───────────────────────────────────────
+    private Map<String, Integer> estadisticasBase;
+
+    // ── Habilidades (con descripción) ─────────────────────────────────
+    private List<ModeloHabilidad> habilidades;
+
+    // ── Especie ───────────────────────────────────────────────────────
     private String descripcion;
     private String generacion;
     private List<String> gruposHuevo;
-    
-    // Evoluciones (-chain logic)
-    private String preEvolucion; // Si viene de alguno (Pikachu -> Pichu)
-    private List<String> evolucionesFuturas; // Lista de siguientes formas
+    private String genero;
+
+    // ── Evoluciones ───────────────────────────────────────────────────
+    private String preEvolucion;
+    private List<String> evolucionesFuturas;
+
+    // ── Efectividad de Tipos ──────────────────────────────────────────
+    private Map<String, Double> debilidades;    // tipo → ×2 o ×4
+    private Map<String, Double> resistencias;   // tipo → ×0.5 o ×0.25
+    private Map<String, String>  inmunidades;    // tipo → nombre español (×0)
+
+    private Map<String, String> traduccionTipos; // tipo ingles -> tipo espanol
 }

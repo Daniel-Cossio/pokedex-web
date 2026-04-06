@@ -1,12 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule, FormsModule, RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {}
+export class App {
+  private router = inject(Router);
+  busqueda = '';
+
+  buscar() {
+    const q = this.busqueda.trim();
+    if (!q) return;
+    this.router.navigate(['/pokemon', q.toLowerCase()]);
+    this.busqueda = '';
+  }
+}

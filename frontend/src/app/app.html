@@ -1,7 +1,17 @@
 <nav class="navbar glass-panel">
   <div class="logo">
-    <span class="pokeball-icon">🔴</span>
+    <span>🔴</span>
     <h1>Pokédex <span class="highlight">Pro</span></h1>
+  </div>
+  <div class="search-container">
+    <input
+      type="text"
+      id="search-input"
+      [(ngModel)]="busqueda"
+      (keydown.enter)="buscar()"
+      placeholder="Busca un Pokémon (ej: pikachu, 25)..."
+      class="search-input">
+    <button (click)="buscar()" class="search-button">Buscar</button>
   </div>
 </nav>
 

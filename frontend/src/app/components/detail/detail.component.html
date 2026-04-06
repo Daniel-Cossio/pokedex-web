@@ -1,102 +1,208 @@
 <div class="wiki-container fade-in">
-  <button class="btn-volver glass-panel" (click)="volver()">← Volver a Generaciones</button>
+  <button class="btn-volver glass-panel" (click)="volver()">← Volver</button>
 
   @if (loading()) {
-    <div class="loader-super">
-      <div class="spinner"></div>
-      <p>Cargando información cifrada de la Pokédex...</p>
-    </div>
+    <div class="loader-super"><div class="spinner"></div><p>Cargando Pokédex...</p></div>
   }
-
   @if (error()) {
-    <div class="glass-panel error-card">Error recuperando la información del Servidor BFF.</div>
+    <div class="glass-panel error-card">Pokémon no encontrado o error de conexión con el servidor.</div>
   }
 
   @if (pokemon() && !loading()) {
+    <!-- HERO HEADER -->
     <div class="hero-header glass-panel">
       <div class="header-titles">
         <span class="gen-badge">{{ pokemon()!.generacion }}</span>
         <h1>{{ pokemon()!.nombre }}</h1>
         <p class="flavor-text">"{{ pokemon()!.descripcion }}"</p>
+        <div class="hero-meta">
+          <span>{{ pokemon()!.genero }}</span>
+          <span class="sep">·</span>
+          <span>📏 Altura: {{ pokemon()!.altura }} m</span>
+          <span class="sep">·</span>
+          <span>⚖️ Peso: {{ pokemon()!.peso }} kg</span>
+        </div>
       </div>
-      <div class="header-id">#{{ pokemon()!.id.toString().padStart(4, '0') }}</div>
-    </div>
-
-    <div class="layout-grid">
-      <!-- Left: Image & Types -->
-      <section class="left-panel glass-panel">
-        <div class="glow-effect" [attr.data-type]="pokemon()!.tiposOriginales[0]"></div>
-        <img [src]="pokemon()!.imagen" alt="{{ pokemon()!.nombre }}" class="main-image">
-        
+      <div class="hero-right">
+        <div class="header-id">#{{ pokemon()!.id.toString().padStart(4,'0') }}</div>
         <div class="types-container">
           @for (tipo of pokemon()!.tiposOriginales; track $index) {
-             <span class="type-badge" [attr.data-type]="tipo">{{ pokemon()!.tiposEspanol[$index] | uppercase }}</span>
+            <span class="type-badge" [attr.data-type]="tipo">{{ pokemon()!.tiposEspanol[$index] | uppercase }}</span>
           }
         </div>
+      </div>
+    </div>
 
-        <div class="physical-stats">
-          <div><br>📏 {{ pokemon()!.altura }} m</div>
-          <div><br>⚖️ {{ pokemon()!.peso }} kg</div>
-        </div>
-      </section>
+    <!-- TABS -->
+    <div class="tabs-detail glass-panel">
+      <button class="tab-btn" [class.active]="tabActiva()==='info'"         (click)="cambiarTab('info')">📊 Estadísticas</button>
+      <button class="tab-btn" [class.active]="tabActiva()==='habilidades'"   (click)="cambiarTab('habilidades')">🌟 Habilidades</button>
+      <button class="tab-btn" [class.active]="tabActiva()==='movimientos'"   (click)="cambiarTab('movimientos')">⚔️ Movimientos</button>
+      <button class="tab-btn" [class.active]="tabActiva()==='efectividad'"   (click)="cambiarTab('efectividad')">🛡️ Efectividad</button>
+    </div>
 
-      <!-- Center: Battle Stats Progress Bars -->
-      <section class="center-panel glass-panel">
-        <h2>Estadísticas de Combate</h2>
-        <div class="stats-list">
-          @for (key of objectKeys(pokemon()!.estadisticasBase); track key) {
-            <div class="stat-row">
-              <span class="stat-name">{{ key }}</span>
-              <span class="stat-num">{{ pokemon()!.estadisticasBase[key] }}</span>
-              <div class="progress-bg">
-                <div class="progress-bar" 
-                     [style.width.%]="(pokemon()!.estadisticasBase[key] / 255) * 100"
-                     [attr.data-type]="pokemon()!.tiposOriginales[0]">
+    <!-- ═══════════════════════════ TAB: INFO ═══════════════════════════ -->
+    @if (tabActiva() === 'info') {
+      <div class="layout-two-col">
+        <!-- Imagen -->
+        <section class="img-panel glass-panel">
+          <div class="glow-effect" [attr.data-type]="pokemon()!.tiposOriginales[0]"></div>
+          <img [src]="pokemon()!.imagen" [alt]="pokemon()!.nombre" class="main-image">
+          <!-- Evoluciones / Crianza -->
+          <div class="evo-block">
+            <h3>🧬 Línea Evolutiva</h3>
+            @if (pokemon()!.preEvolucion) {
+              <div class="info-row"><span class="label">Evoluciona de:</span>
+                <b class="evo-link" (click)="cargarPokemon(pokemon()!.preEvolucion!)">{{ pokemon()!.preEvolucion }}</b>
+              </div>
+            }
+            @if (pokemon()!.evolucionesFuturas.length > 0) {
+              <div class="info-row"><span class="label">Evoluciones:</span></div>
+              <div class="tag-list">
+                @for (evo of pokemon()!.evolucionesFuturas; track evo) {
+                  <span class="tag clickable" (click)="cargarPokemon(evo)">{{ evo }} ↗</span>
+                }
+              </div>
+            } @else {
+              <div class="info-row"><span class="label">Es su forma final.</span></div>
+            }
+            <div class="info-row" style="margin-top:1rem">
+              <span class="label">🥚 Grupos Huevo:</span>
+              <span>{{ pokemon()!.gruposHuevo.join(' / ') || '—' }}</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Stats -->
+        <section class="center-panel glass-panel">
+          <h2>Estadísticas de Combate</h2>
+          <div class="stats-list">
+            @for (key of objectKeys(pokemon()!.estadisticasBase); track key) {
+              <div class="stat-row">
+                <span class="stat-name">{{ key }}</span>
+                <span class="stat-num">{{ pokemon()!.estadisticasBase[key] }}</span>
+                <div class="progress-bg">
+                  <div class="progress-bar"
+                       [style.width.%]="(pokemon()!.estadisticasBase[key] / 255) * 100"
+                       [attr.data-type]="pokemon()!.tiposOriginales[0]"></div>
                 </div>
               </div>
+            }
+          </div>
+        </section>
+      </div>
+    }
+
+    <!-- ════════════════════════ TAB: HABILIDADES ════════════════════════ -->
+    @if (tabActiva() === 'habilidades') {
+      <div class="abilities-grid fade-in">
+        @for (hab of pokemon()!.habilidades; track hab.nombreOriginal) {
+          <div class="ability-card glass-panel" [class.hidden]="hab.esOculta">
+            <div class="ability-header">
+              <span class="ability-name">{{ hab.nombre }}</span>
+              @if (hab.esOculta) { <span class="hidden-badge">Oculta</span> }
             </div>
-          }
-        </div>
-      </section>
+            <p class="ability-desc">{{ hab.descripcion }}</p>
+          </div>
+        }
+      </div>
+    }
 
-      <!-- Right: Lore and Evolutions -->
-      <section class="right-panel">
-        <!-- Habilidades -->
-        <div class="info-block glass-panel">
-          <h3>🌟 Habilidades</h3>
-          <ul>
-            @for (hab of pokemon()!.habilidades; track hab) { <li>{{ hab }}</li> }
-          </ul>
-        </div>
-
-        <!-- Crianza -->
-        <div class="info-block glass-panel">
-          <h3>🥚 Grupos Huevo</h3>
-          <div class="tag-list">
-            @for (huevo of pokemon()!.gruposHuevo; track huevo) { <span class="tag">{{ huevo }}</span> }
+    <!-- ════════════════════════ TAB: MOVIMIENTOS ════════════════════════ -->
+    @if (tabActiva() === 'movimientos') {
+      @if (loadingMovs()) {
+        <div class="loader"><div class="spinner"></div><p>Cargando movimientos...</p></div>
+      } @else if (movimientos()) {
+        <div class="movs-container fade-in">
+          <div class="movs-tabs glass-panel">
+            @for (met of metodosDisponibles(); track met) {
+              <button class="tab-btn" [class.active]="tabMovActiva()===met" (click)="tabMovActiva.set(met)">
+                {{ metodosLabel[met] || met }}
+              </button>
+            }
+          </div>
+          <div class="movs-table-wrapper glass-panel">
+            <table class="movs-table">
+              <thead>
+                <tr>
+                  @if (tabMovActiva()==='nivel') { <th>Niv.</th> }
+                  <th>Movimiento</th>
+                  <th>Tipo</th>
+                  <th>Cat.</th>
+                  <th>Pwr</th>
+                  <th>Prec.</th>
+                  <th>PP</th>
+                  <th>Descripción</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (mov of movimientos()![tabMovActiva()]; track mov.nombre) {
+                  <tr>
+                    @if (tabMovActiva()==='nivel') { <td class="nivel-cell">{{ mov.nivel ?? '—' }}</td> }
+                    <td class="move-name">{{ mov.nombre }}</td>
+                    <td><span class="type-chip" [attr.data-type]="mov.tipo">{{ mov.tipoEspanol }}</span></td>
+                    <td><span class="cat-chip" [attr.data-cat]="mov.categoria">{{ mov.categoria }}</span></td>
+                    <td class="num-cell">{{ mov.poder ?? '—' }}</td>
+                    <td class="num-cell">{{ mov.precision ? mov.precision + '%' : '—' }}</td>
+                    <td class="num-cell">{{ mov.pp }}</td>
+                    <td class="desc-cell">{{ mov.descripcion }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
           </div>
         </div>
+      }
+    }
 
-        <!-- Evolucion -->
-        <div class="info-block glass-panel">
-          <h3>🧬 Línea Evolutiva</h3>
-          
-          @if (pokemon()!.preEvolucion) {
-            <div class="evo-row"><span class="label">Evoluciona de:</span> <b>{{ pokemon()!.preEvolucion }}</b></div>
-          }
-          
-          @if (pokemon()!.evolucionesFuturas.length > 0) {
-            <div class="evo-row"><span class="label">Puede evolucionar a:</span></div>
-            <ul class="evo-list">
-              @for (evo of pokemon()!.evolucionesFuturas; track evo) {
-                <li class="tag clickable" (click)="cargarPokemon(evo)">{{ evo }} ↗</li>
+    <!-- ════════════════════════ TAB: EFECTIVIDAD ════════════════════════ -->
+    @if (tabActiva() === 'efectividad') {
+      <div class="efectividad-container fade-in">
+        <!-- DEBILIDADES -->
+        @if (pokemon()!.debilidades && objectKeys(pokemon()!.debilidades).length > 0) {
+          <div class="efect-section glass-panel">
+            <h3>🔴 Débil contra</h3>
+            <div class="efect-grid">
+              @for (tipo of objectKeys(pokemon()!.debilidades); track tipo) {
+                <div class="efect-badge" [attr.data-type]="tipo">
+                  <span class="tipo-name">{{ (pokemon()!.traduccionTipos?.[tipo] || tipo) | uppercase }}</span>
+                  <span class="mult-label">{{ multLabel(pokemon()!.debilidades[tipo]) }}</span>
+                </div>
               }
-            </ul>
-          } @else {
-            <div class="evo-row"><span class="label">Forma Final.</span></div>
-          }
-        </div>
-      </section>
-    </div>
+            </div>
+          </div>
+        }
+
+        <!-- RESISTENCIAS -->
+        @if (pokemon()!.resistencias && objectKeys(pokemon()!.resistencias).length > 0) {
+          <div class="efect-section glass-panel">
+            <h3>🟢 Resiste</h3>
+            <div class="efect-grid">
+              @for (tipo of objectKeys(pokemon()!.resistencias); track tipo) {
+                <div class="efect-badge resist" [attr.data-type]="tipo">
+                  <span class="tipo-name">{{ (pokemon()!.traduccionTipos?.[tipo] || tipo) | uppercase }}</span>
+                  <span class="mult-label">{{ multLabel(pokemon()!.resistencias[tipo]) }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- INMUNIDADES -->
+        @if (pokemon()!.inmunidades && objectKeys(pokemon()!.inmunidades).length > 0) {
+          <div class="efect-section glass-panel">
+            <h3>⚫ Inmune a</h3>
+            <div class="efect-grid">
+              @for (tipo of objectKeys(pokemon()!.inmunidades); track tipo) {
+                <div class="efect-badge inmune" [attr.data-type]="tipo">
+                  <span class="tipo-name">{{ (pokemon()!.traduccionTipos?.[tipo] || tipo) | uppercase }}</span>
+                  <span class="mult-label">×0</span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
   }
 </div>
