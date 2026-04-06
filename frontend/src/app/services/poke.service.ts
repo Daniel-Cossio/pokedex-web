@@ -66,4 +66,12 @@ export class PokeService {
   getGeneracion(idGen: number): Observable<MiniPokemon[]> {
     return this.http.get<MiniPokemon[]>(`${this.apiUrl}/generacion/${idGen}`);
   }
+
+  getTablaTipos(): Observable<{ [atk: string]: { [def: string]: number } }> {
+    return this.http.get<{ [atk: string]: { [def: string]: number } }>(`${this.apiUrl}/tipos/tabla`);
+  }
+
+  getTraduccionesTipos(): Observable<{ [key: string]: string }> {
+    return this.http.get<{ [key: string]: string }>(`${this.apiUrl}/tipos/traducciones`);
+  }
 }

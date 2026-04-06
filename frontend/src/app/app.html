@@ -1,7 +1,11 @@
 <nav class="navbar glass-panel">
   <div class="logo">
-    <span>🔴</span>
-    <h1>Pokédex <span class="highlight">Pro</span></h1>
+    <span (click)="irAHome()" style="cursor:pointer">🔴</span>
+    <h1 (click)="irAHome()" style="cursor:pointer">Pokédex <span class="highlight">Pro</span></h1>
+  </div>
+  <div class="nav-links">
+    <a routerLink="/" class="nav-link">Inicio</a>
+    <a routerLink="/tipos" class="nav-link">Tabla de Tipos</a>
   </div>
   <div class="search-container">
     <input

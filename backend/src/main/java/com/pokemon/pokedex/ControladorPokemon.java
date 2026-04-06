@@ -29,4 +29,14 @@ public class ControladorPokemon {
     public List<MiniPokemon> obtenerGeneracion(@PathVariable Integer idGen) {
         return servicioPokemon.obtenerGeneracion(idGen);
     }
+
+    @GetMapping("/tipos/tabla")
+    public Map<String, Map<String, Double>> obtenerTablaTipos() {
+        return TablaEfectividad.getTablaCompleta();
+    }
+
+    @GetMapping("/tipos/traducciones")
+    public Map<String, String> obtenerTraduccionesTipos() {
+        return DiccionarioTipos.getTraduccionesMap();
+    }
 }

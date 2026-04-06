@@ -133,6 +133,10 @@ public class TablaEfectividad {
         return new ResultadoEfectividad(debilidades, resistencias, inmunidades);
     }
 
+    public static Map<String, Map<String, Double>> getTablaCompleta() {
+        return TABLA;
+    }
+
     public record ResultadoEfectividad(
         Map<String, Double> debilidades,
         Map<String, Double> resistencias,

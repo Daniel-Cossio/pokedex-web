@@ -1,0 +1,62 @@
+<div class="chart-container fade-in">
+  <header class="header glass-panel">
+    <h1>Matriz de Efectividad de Tipos</h1>
+    <p>Consulta las fortalezas y debilidades de cada tipo (Generación VI+). Las filas son el Atacante y las columnas el Defensor.</p>
+  </header>
+
+  @if (loading()) {
+    <div class="loader"><div class="spinner"></div><p>Cargando matriz...</p></div>
+  }
+
+  @if (tabla() && !loading()) {
+    <div class="table-wrapper glass-panel">
+      <table class="grid-table">
+        <thead>
+          <tr>
+            <th class="corner"></th>
+            @for (def of tiposOrden; track def) {
+              <th [attr.data-type]="def"
+                  class="type-header def-header"
+                  [class.highlight]="hoverDef() === def"
+                  (mouseenter)="hoverDef.set(def)"
+                  (mouseleave)="hoverDef.set(null)"
+                  [title]="traducciones()[def]">
+                <span>{{ (traducciones()[def] || def).substring(0, 3).toUpperCase() }}</span>
+              </th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (atk of tiposOrden; track atk) {
+            <tr>
+              <th [attr.data-type]="atk"
+                  class="type-header atk-header"
+                  [class.highlight]="hoverAtk() === atk"
+                  (mouseenter)="hoverAtk.set(atk)"
+                  (mouseleave)="hoverAtk.set(null)">
+                {{ (traducciones()[atk] || atk).toUpperCase() }}
+              </th>
+              @for (def of tiposOrden; track def) {
+                <td [class]="getClass(getMult(atk, def))"
+                    [class.active-col]="hoverDef() === def"
+                    [class.active-row]="hoverAtk() === atk"
+                    (mouseenter)="hoverAtk.set(atk); hoverDef.set(def)"
+                    (mouseleave)="hoverAtk.set(null); hoverDef.set(null)">
+                  {{ formatMult(getMult(atk, def)) }}
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Leyenda -->
+    <div class="legend glass-panel">
+      <div class="legend-item"><span class="box super-effective">2</span> Súper Efectivo (x2)</div>
+      <div class="legend-item"><span class="box neutral"></span> Neutral (x1)</div>
+      <div class="legend-item"><span class="box not-very-effective">½</span> Poco Efectivo (x0.5)</div>
+      <div class="legend-item"><span class="box no-effect">0</span> Sin Efecto (x0)</div>
+    </div>
+  }
+</div>
