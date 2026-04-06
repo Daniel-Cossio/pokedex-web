@@ -1,0 +1,29 @@
+<section class="home-container">
+  <div class="tabs-container glass-panel">
+    @for (gen of generaciones; track gen) {
+      <button 
+        class="tab-btn" 
+        [class.active]="genActiva() === gen"
+        (click)="cargarGeneracion(gen)">
+        Gen {{ gen }}
+      </button>
+    }
+  </div>
+
+  @if (loading()) {
+    <div class="loader">
+      <div class="spinner"></div>
+      <p>Cargando Generación {{ genActiva() }}...</p>
+    </div>
+  } @else {
+    <div class="pokemon-grid fade-in">
+      @for (poke of pokemonList(); track poke.id) {
+        <div class="mini-card glass-panel" (click)="verDetalle(poke.id)">
+          <span class="poke-id">#{{ poke.id.toString().padStart(3, '0') }}</span>
+          <img [src]="poke.imagen" [alt]="poke.nombre" loading="lazy">
+          <h3>{{ poke.nombre }}</h3>
+        </div>
+      }
+    </div>
+  }
+</section>
