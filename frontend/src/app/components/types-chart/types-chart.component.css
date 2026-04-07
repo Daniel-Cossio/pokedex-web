@@ -17,10 +17,100 @@
   color: var(--text-secondary);
 }
 
+/* CALCULADOR DUAL */
+.calculator-panel {
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid var(--accent-color);
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.calc-header h3 { margin: 0; color: var(--accent-color); font-weight: 800; }
+.calc-header p { margin: 0.2rem 0 0.5rem 0; font-size: 0.9rem; opacity: 0.8; }
+
+.calc-controls {
+  display: flex;
+  gap: 2rem;
+  margin: 1.5rem 0;
+}
+
+.select-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.select-group label { font-weight: 700; font-size: 0.85rem; color: var(--text-secondary); }
+
+.select-group select {
+  padding: 0.8rem;
+  background: #1e293b;
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.badges-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.efect-badge {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.calc-placeholder {
+  padding: 2rem;
+  text-align: center;
+  border: 1px dashed var(--glass-border);
+  border-radius: 8px;
+  opacity: 0.5;
+}
+
+/* MATRIZ CON EJES */
 .table-wrapper {
+  padding: 2.5rem 1rem 1rem 1rem; /* Espacio para el eje horizontal */
+  position: relative;
+}
+
+.axis-label {
+  position: absolute;
+  font-weight: 900;
+  font-size: 0.7rem;
+  color: var(--accent-color);
+  letter-spacing: 2px;
+  pointer-events: none;
+}
+
+.axis-label.horizontal {
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.axis-label.vertical {
+  left: -2rem; /* Se ajusta con el scroll-container */
+  top: 50%;
+  transform: rotate(-90deg) translateX(50%);
+  white-space: nowrap;
+}
+
+.table-scroll-container {
   overflow-x: auto;
-  padding: 1rem;
-  border-radius: 12px;
+  position: relative;
+  padding-left: 1.5rem; /* Espacio para el eje vertical */
 }
 
 .grid-table {

@@ -25,6 +25,10 @@ export class TypesChartComponent implements OnInit {
   hoverAtk = signal<string | null>(null);
   hoverDef = signal<string | null>(null);
 
+  // Selector Dual
+  tipo1 = signal<string | null>(null);
+  tipo2 = signal<string | null>(null);
+
   ngOnInit() {
     this.pokeService.getTraduccionesTipos().subscribe(t => this.traducciones.set(t));
     this.pokeService.getTablaTipos().subscribe({
@@ -34,6 +38,24 @@ export class TypesChartComponent implements OnInit {
       },
       error: () => this.loading.set(false)
     });
+  }
+
+  getCombinedEffectiveness() {
+    const t1 = this.tipo1();
+    const t2 = this.tipo2();
+    if (!t1 && !t2) return null;
+
+    const results: { type: string, mult: number }[] = [];
+    for (const atk of this.tiposOrden) {
+      let mult = 1.0;
+      if (t1) mult *= this.getMult(atk, t1);
+      if (t2) mult *= this.getMult(atk, t2);
+      
+      if (mult !== 1.0) {
+        results.push({ type: atk, mult });
+      }
+    }
+    return results.sort((a, b) => b.mult - a.mult);
   }
 
   getMult(atk: string, def: string): number {

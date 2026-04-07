@@ -4,17 +4,72 @@
     <p>Consulta las fortalezas y debilidades de cada tipo (Generación VI+). Las filas son el Atacante y las columnas el Defensor.</p>
   </header>
 
+  <!-- CALCULADOR DUAL -->
+  <div class="calculator-panel glass-panel fade-in">
+    <div class="calc-header">
+      <h3>🔍 Calculador de Combinación de Tipos</h3>
+      <p>Selecciona uno o dos tipos para ver sus debilidades y resistencias combinadas.</p>
+    </div>
+    <div class="calc-controls">
+      <div class="select-group">
+        <label>Tipo 1</label>
+        <select [value]="tipo1() || ''" (change)="tipo1.set($any($event.target).value || null)">
+          <option value="">Ninguno</option>
+          @for (t of tiposOrden; track t) {
+            <option [value]="t">{{ traducciones()[t] || t }}</option>
+          }
+        </select>
+      </div>
+      <div class="select-group">
+        <label>Tipo 2</label>
+        <select [value]="tipo2() || ''" (change)="tipo2.set($any($event.target).value || null)">
+          <option value="">Ninguno</option>
+          @for (t of tiposOrden; track t) {
+            <option [value]="t">{{ traducciones()[t] || t }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    @if (getCombinedEffectiveness(); as results) {
+      <div class="calc-results">
+        <div class="res-group">
+          <h4>Debilidades y Resistencias</h4>
+          <div class="badges-grid">
+            @for (res of results; track res.type) {
+              <div class="efect-badge" [attr.data-type]="res.type" [class]="getClass(res.mult)">
+                <span class="t-name">{{ (traducciones()[res.type] || res.type).toUpperCase() }}</span>
+                <span class="t-mult">x{{ res.mult }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    } @else {
+      <div class="calc-placeholder">
+        <p>Selecciona al menos un tipo para ver los resultados.</p>
+      </div>
+    }
+  </div>
+
   @if (loading()) {
     <div class="loader"><div class="spinner"></div><p>Cargando matriz...</p></div>
   }
 
   @if (tabla() && !loading()) {
     <div class="table-wrapper glass-panel">
-      <table class="grid-table">
-        <thead>
-          <tr>
-            <th class="corner"></th>
-            @for (def of tiposOrden; track def) {
+      <!-- Etiqueta Eje Horizontal -->
+      <div class="axis-label horizontal">TIPO DEFENSOR</div>
+      
+      <div class="table-scroll-container">
+        <!-- Etiqueta Eje Vertical -->
+        <div class="axis-label vertical">TIPO ATACANTE</div>
+
+        <table class="grid-table">
+          <thead>
+            <tr>
+              <th class="corner"></th>
+              @for (def of tiposOrden; track def) {
               <th [attr.data-type]="def"
                   class="type-header def-header"
                   [class.highlight]="hoverDef() === def"
@@ -50,6 +105,7 @@
         </tbody>
       </table>
     </div>
+  </div>
 
     <!-- Leyenda -->
     <div class="legend glass-panel">
