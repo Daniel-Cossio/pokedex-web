@@ -78,3 +78,18 @@
   font-weight: 800;
   text-align: center;
 }
+
+/* ────────────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .home-container { padding: 1.5rem 1rem; }
+  .tabs-container { gap: 0.3rem; padding: 0.5rem; margin-bottom: 1.5rem; }
+  .tab-btn { padding: 0.4rem 1rem; font-size: 0.85rem; }
+  .pokemon-grid { gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+}
+
+@media (max-width: 400px) {
+  .pokemon-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+  .mini-card { padding: 1rem; }
+  .mini-card img { width: 90px; height: 90px; }
+  .mini-card h3 { font-size: 1rem; }
+}

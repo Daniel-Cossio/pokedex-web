@@ -223,7 +223,30 @@
   .hero-right { text-align:left; }
   .types-container { justify-content:flex-start; }
 }
+
 @media (max-width:600px) {
-  .hero-header { padding:1.5rem; }
-  .header-titles h1 { font-size:2.5rem; }
+  .wiki-container { padding: 1rem 1rem 3rem; }
+  .hero-header { padding: 1.5rem; gap: 1rem; }
+  .header-titles h1 { font-size: 2.5rem; }
+  .header-id { font-size: 3rem; text-align: left; }
+  .tabs-detail { padding: 0.5rem; gap: 0.3rem; }
+  .tab-btn { padding: 0.5rem 1rem; font-size: 0.85rem; }
+  
+  /* Stats en móvil */
+  .center-panel { padding: 1.5rem; }
+  .stat-row { grid-template-columns: 110px 40px 1fr; }
+  .stat-name { font-size: 0.8rem; }
+  
+  /* Imagen */
+  .main-image { width: 220px; height: 220px; }
+  .img-panel { padding: 1rem; }
+
+  /* Tablas de movimientos */
+  .movs-table-wrapper { padding: 0.5rem; }
+  .desc-cell { display: none; } /* Ocultar descripción larga en móviles muy pequeños */
+}
+
+@media (max-width: 400px) {
+  .header-titles h1 { font-size: 2rem; }
+  .hero-meta { font-size: 0.9rem; }
 }
