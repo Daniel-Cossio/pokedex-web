@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface MiniPokemon {
   id: number;
@@ -53,7 +54,7 @@ export interface ModeloPokemon {
 @Injectable({ providedIn: 'root' })
 export class PokeService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/pokemon';
+  private apiUrl = environment.apiUrl;
 
   getPokemonInfo(id: string | number): Observable<ModeloPokemon> {
     return this.http.get<ModeloPokemon>(`${this.apiUrl}/${id.toString().toLowerCase()}`);
