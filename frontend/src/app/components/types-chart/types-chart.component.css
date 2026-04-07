@@ -101,10 +101,12 @@
 }
 
 .axis-label.vertical {
-  left: -2rem; /* Se ajusta con el scroll-container */
-  top: 50%;
+  left: 0.5rem;
+  top: 55%;
   transform: rotate(-90deg) translateX(50%);
+  transform-origin: left center;
   white-space: nowrap;
+  z-index: 50;
 }
 
 .table-scroll-container {
@@ -171,8 +173,23 @@
 
 /* Multiplicadores */
 .super-effective { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+.super-effective.x4 { 
+  background: #16a34a !important; 
+  color: white !important; 
+  box-shadow: 0 0 15px rgba(34, 197, 94, 0.5);
+  border-color: #15803d;
+}
+
 .not-very-effective { background: rgba(234, 179, 8, 0.15); color: #eab308; }
+.not-very-effective.x025 {
+  background: #ca8a04 !important;
+  color: white !important;
+  border-color: #a16207;
+}
+
 .no-effect { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+.no-effect.badge-mode { background: #dc2626 !important; color: white !important; }
+
 .neutral { color: var(--text-secondary); opacity: 0.4; }
 
 /* Sticky Headers */

@@ -37,7 +37,7 @@
           <h4>Debilidades y Resistencias</h4>
           <div class="badges-grid">
             @for (res of results; track res.type) {
-              <div class="efect-badge" [attr.data-type]="res.type" [class]="getClass(res.mult)">
+              <div class="efect-badge badge-mode" [attr.data-type]="res.type" [class]="getClass(res.mult)">
                 <span class="t-name">{{ (traducciones()[res.type] || res.type).toUpperCase() }}</span>
                 <span class="t-mult">x{{ res.mult }}</span>
               </div>
@@ -61,10 +61,10 @@
       <!-- Etiqueta Eje Horizontal -->
       <div class="axis-label horizontal">TIPO DEFENSOR</div>
       
-      <div class="table-scroll-container">
-        <!-- Etiqueta Eje Vertical -->
-        <div class="axis-label vertical">TIPO ATACANTE</div>
+      <!-- Etiqueta Eje Vertical -->
+      <div class="axis-label vertical">TIPO ATACANTE</div>
 
+      <div class="table-scroll-container">
         <table class="grid-table">
           <thead>
             <tr>

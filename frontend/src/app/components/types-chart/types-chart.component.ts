@@ -63,15 +63,19 @@ export class TypesChartComponent implements OnInit {
   }
 
   formatMult(m: number): string {
+    if (m === 4) return '4';
     if (m === 2) return '2';
     if (m === 0.5) return '½';
+    if (m === 0.25) return '¼';
     if (m === 0) return '0';
     return '';
   }
 
   getClass(m: number): string {
+    if (m === 4) return 'super-effective x4';
     if (m === 2) return 'super-effective';
     if (m === 0.5) return 'not-very-effective';
+    if (m === 0.25) return 'not-very-effective x025';
     if (m === 0) return 'no-effect';
     return 'neutral';
   }
