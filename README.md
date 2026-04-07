@@ -1,62 +1,118 @@
-# Pokédex Web - Proyecto Full-Stack
+# 🔴 Pokédex Pro Wiki - Proyecto Full-Stack
 
-Este proyecto es una aplicación web interactiva para explorar Pokémon, consumiendo los datos de la PokéAPI pública. Está construido bajo una arquitectura moderna dividida en Backend y Frontend.
+Pokédex Pro es una enciclopedia Pokémon de alto rendimiento y diseño premium (*Dark Mode / Glassmorphism*), diseñada para ofrecer una experiencia de usuario fluida y datos de combate precisos. El proyecto utiliza una arquitectura de **Backend for Frontend (BFF)** para consolidar datos de la PokéAPI y servirlos de forma optimizada y localizada al español.
+
+---
 
 ## 🏗️ Arquitectura y Tecnologías
 
-Este proyecto reside en un Monorepo que incluye los dos componentes principales:
+El proyecto está organizado en un monorepo con una separación clara entre lógica de negocio/agregación y presentación.
 
-### 1. Backend (Java / Spring Boot)
-- **Ruta del componente:** `/backend`
-- **Lenguaje:** Java 25 (LTS próximo/actual)
-- **Framework Principal:** Spring Boot 3.3.x
-- **Gestor de Dependencias:** Maven o Gradle (Por definir)
-- **Dependencias y Librerías Principales:**
-  - `spring-boot-starter-web`: Exposición de la API REST para que el frontend pueda solicitar datos.
-  - `spring-boot-starter-data-jpa`: Capa de persistencia, facilitando el mapeo objeto-relacional (ORM) con Hibernate.
-  - `h2`: Base de datos en memoria sumamente ligera. Ideal para la fase de desarrollo, permitiendo guardar favoritos o caché sin necesidad de instalar un motor externo.
-  - `spring-boot-starter-webflux`: Cliente reactivo (`WebClient`) necesario para consumir eficientemente la PokéAPI externa.
-  - `lombok`: Herramienta de productividad para reducir el "código repetitivo" (getters, setters, constructores) mediante anotaciones.
+### 1. ⚙️ Backend (BFF - Backend for Frontend)
+- **Localización:** `/backend`
+- **Lenguaje:** `Java 17 (LTS)`
+- **Framework:** `Spring Boot 4.0.5`
+- **Gestor de Construcción:** `Gradle 8.12.1`
+- **Lógica de Negocio:** 
+  - Agregación multithreaded de PokéAPI.
+  - Motor dinámico de efectividad de tipos (Generación VI+).
+  - Diccionario de traducción nativo para tipos, habilidades, movimientos y grupos huevo.
 
-### 2. Frontend (Angular)
-- **Ruta del componente:** `/frontend`
-- **Lenguaje:** TypeScript
-- **Framework:** Angular 18+
-- **Estilos:** Vanilla CSS / SCSS (Enfocado a diseño Premium: Glassmorphism, micro-animaciones, colores vibrantes de tipo HSL, tipografía moderna como 'Inter' o 'Outfit').
-- **Módulos Activos:**
-  - `HttpClientModule`: Para comunicarse con nuestro Backend en Java.
-  - `RouterModule`: Navegación fluida tipo SPA (Single Page Application) entre el listado general y el detalle individual de cada Pokémon.
+### 2. 🎨 Frontend (Diseño Premium)
+- **Localización:** `/frontend`
+- **Framework:** `Angular 21.2.x` (Arquitectura Zoneless)
+- **Gestión de Estado:** `Angular Signals`
+- **Estilos:** `Vanilla CSS` con variables CSS para temas dinámicos.
+- **Diseño UI/UX:**
+  - **Glassmorphism:** Paneles traslúcidos con desenfoque de fondo.
+  - **Dark Mode:** Paleta de colores optimizada para legibilidad.
+  - **Performance:** Carga perezosa (Lazy loading) de movimientos y optimización de imágenes.
+
+---
+
+## 🌟 Funcionalidades Principales
+
+### 🌍 Localización Total
+- **100% en Español:** Nombres, descripciones de habilidades, efectos de movimientos, tipos y categorías de búsqueda.
+- **Formato Regional:** Altura en metros (m) y peso en kilogramos (kg).
+
+### ⚔️ Inteligencia de Combate
+- **Analizador de Tipos:** Cálculo dinámico de debilidades (x2, x4), resistencias (x0.5, x0.25) e inmunidades (x0).
+- **Matriz Global:** Sección dedicada con una matriz interactiva de 18x18 tipos.
+- **Calculador Dual:** Herramienta para combinar dos tipos y ver sus debilidades críticas combinadas.
+
+### 📚 Base de Datos Completa
+- **Movimientos:** Desglose completo por Nivel, MT/MO, Huevo y Tutor.
+- **Evoluciones:** Cadena evolutiva visual y detallada.
+- **Generaciones:** Navegación optimizada por regiones (Kanto -> Paldea).
 
 ---
 
-## 🛠️ Entorno de Trabajo Requerido (Setup Inicial)
+## 🛠️ Instalación y Configuración Local
 
-Para que puedas correr, compilar y modificar este proyecto en tu entorno local (Windows), necesitas:
+### Prerrequisitos
+- **Java 17+**
+- **Node.js 25+** (LTS recomendado para npm)
+- **Angular CLI (`npm install -g @angular/cli`)**
 
-1. **Java JDK:** (Instalado - detectada versión 25).
-2. **Node.js (LTS):** Necesario para ejecutar Angular CLI y compilar el frontend. Descárgalo en [nodejs.org](https://nodejs.org/).
-3. **IDE / Editor:** Se recomienda fuertemente **Visual Studio Code** (con extensiones de Angular y Java) o **IntelliJ IDEA** para la parte del servidor.
-4. **Angular CLI:** Una vez instalado Node.js, debes instalar Angular globalmente abriendo una terminal y ejecutando:
-   ```bash
-   npm install -g @angular/cli
+### Pasos para Ejecutar
+1. **Backend:**
+   ```powershell
+   cd backend
+   ./gradlew bootRun
    ```
+   El backend estará disponible en `http://localhost:8080/api/pokemon`
 
-## 🚀 Instrucciones para Ejecutar el Proyecto
-
-*(Esta sección se irá expandiendo a medida que generemos el código base)*
-
-### Levantar el Backend
-1. Abre una terminal en la carpeta `/backend`.
-2. Ejecuta el comando `./mvnw spring-boot:run` (si usamos Maven) o su equivalente en Gradle.
-3. El servidor se expondrá por defecto en `http://localhost:8080`.
-
-### Levantar el Frontend
-1. Abre una terminal en la carpeta `/frontend`.
-2. Estando seguro de haber corrido previamente `npm install` para instalar dependencias, ejecuta:
-   ```bash
-   ng serve
+2. **Frontend:**
+   ```powershell
+   cd frontend
+   npm install
+   npx ng serve --port 4200
    ```
-3. La aplicación visual estará disponible en el navegador accediendo a `http://localhost:4200`.
+   Accede a la interfaz en `http://localhost:4200`
 
 ---
-*Este documento se mantendrá vivo y se actualizará a medida que integramos nuevos servicios, bases de datos externas o componentes avanzados.*
+
+## 🚀 Despliegue (Production Ready)
+
+### Gestión de IPs Dinámicas (Environments)
+El proyecto utiliza el sistema de **Environments** de Angular para evitar URLs harcodeadas.
+- **Local:** Usa `src/environments/environment.development.ts`.
+- **Producción:** Usa `src/environments/environment.ts`.
+
+#### Despliegue del Backend (Render / Railway / Heroku)
+1. Conecta tu repo y selecciona el directorio `backend`.
+2. Comando de construcción: `./gradlew build`.
+3. Comando de inicio: `java -jar build/libs/pokedex-0.0.1-SNAPSHOT.jar`.
+4. **IMPORTANTE:** Copia la URL pública generada.
+
+#### Despliegue del Frontend (Vercel / Netlify)
+1. Edita `src/environments/environment.ts` y pega la URL de tu backend en `apiUrl`.
+2. Conecta tu repo y selecciona el directorio `frontend`.
+3. Comando de construcción: `ng build`.
+4. Directorio de salida: `dist/pokedex-frontend/browser`.
+
+---
+
+## 📂 Estructura del Proyecto (Referencia)
+
+```text
+/
+├── backend/
+│   ├── src/main/java/com/pokemon/pokedex/
+│   │   ├── ControladorPokemon.java  <-- Endpoints REST
+│   │   ├── ServicioPokemon.java     <-- Lógica PokéAPI + Traducciones
+│   │   ├── TablaEfectividad.java    <-- Motor de tipos
+│   │   └── ModeloPokemon.java       <-- DTOs optimizados
+├── frontend/
+│   ├── src/app/
+│   │   ├── components/
+│   │   │   ├── home/                <-- Grilla de generaciones
+│   │   │   ├── detail/              <-- Enciclopedia individual
+│   │   │   └── types-chart/         <-- Matriz y calculadora dual
+│   │   └── services/
+│   │       └── poke.service.ts      <-- Comunicación con BFF
+```
+
+---
+*Este proyecto es parte de una iniciativa de enciclopedia Pokémon profesional y es de uso libre para aprendizaje.*
