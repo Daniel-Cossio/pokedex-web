@@ -80,11 +80,15 @@ El proyecto utiliza el sistema de **Environments** de Angular para evitar URLs h
 - **Local:** Usa `src/environments/environment.development.ts`.
 - **Producción:** Usa `src/environments/environment.ts`.
 
-#### Despliegue del Backend (Render / Railway / Heroku)
-1. Conecta tu repo y selecciona el directorio `backend`.
-2. Comando de construcción: `./gradlew build`.
-3. Comando de inicio: `java -jar build/libs/pokedex-0.0.1-SNAPSHOT.jar`.
-4. **IMPORTANTE:** Copia la URL pública generada.
+#### Despliegue del Backend (Render / Docker)
+Render no tiene un entorno nativo de Java, por lo que utilizamos **Docker**:
+1. En Render, crea un nuevo **Web Service**.
+2. Conecta tu repositorio de GitHub.
+3. Elige la carpeta raíz del proyecto (o especifica `backend` como el directorio raíz).
+4. El **Runtime** se detectará automáticamente como **Docker**.
+5. Render usará el `Dockerfile` que he creado en `/backend` para compilar y ejecutar tu aplicación automáticamente.
+6. Asegúrate de exponer el puerto `8080`.
+7. **IMPORTANTE:** Copia la URL pública generada (ej: `https://pokedex-api.onrender.com`).
 
 #### Despliegue del Frontend (Vercel / Netlify)
 1. Edita `src/environments/environment.ts` y pega la URL de tu backend en `apiUrl`.
