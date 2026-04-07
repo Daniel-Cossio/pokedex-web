@@ -101,12 +101,15 @@
 }
 
 .axis-label.vertical {
-  left: 0.5rem;
+  left: 0.2rem;
   top: 55%;
   transform: rotate(-90deg) translateX(50%);
   transform-origin: left center;
   white-space: nowrap;
   z-index: 50;
+  background: #0f172a; /* Fondo sólido para tapar scroll */
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
 }
 
 .table-scroll-container {
