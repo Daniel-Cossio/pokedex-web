@@ -141,6 +141,46 @@
 @keyframes float   { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
 @keyframes fadeIn  { from { opacity:0; transform: translateY(18px) scale(0.97); } to { opacity:1; transform: none; } }
 
+/* ── Suggestion Box ──────────────────────────────────────────────────── */
+.search-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.suggestions-box {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 1000;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.suggestion-item {
+  padding: 0.8rem 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.suggestion-item:last-child { border-bottom: none; }
+
+.suggestion-item:hover {
+  background: rgba(59, 130, 246, 0.2);
+  padding-left: 1.5rem;
+}
+
+.s-name { font-weight: 700; color: white; }
+.s-id { font-size: 0.8rem; opacity: 0.6; font-weight: 800; font-family: 'Outfit', sans-serif; }
+
 .fade-in { animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
 /* ── Mobile Responsive ────────────────────────────────────────────────── */

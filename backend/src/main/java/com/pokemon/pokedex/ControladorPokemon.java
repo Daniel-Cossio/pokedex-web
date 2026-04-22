@@ -39,4 +39,9 @@ public class ControladorPokemon {
     public Map<String, String> obtenerTraduccionesTipos() {
         return DiccionarioTipos.getTraduccionesMap();
     }
+
+    @GetMapping("/suggestions")
+    public List<SuggestionDTO> obtenerSugerencias() {
+        return servicioPokemon.obtenerSugerencias();
+    }
 }

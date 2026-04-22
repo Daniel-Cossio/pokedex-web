@@ -8,13 +8,30 @@
     <a routerLink="/tipos" class="nav-link">Tabla de Tipos</a>
   </div>
   <div class="search-container">
-    <input
-      type="text"
-      id="search-input"
-      [(ngModel)]="busqueda"
-      (keydown.enter)="buscar()"
-      placeholder="Busca un Pokémon (ej: pikachu, 25)..."
-      class="search-input">
+    <div class="search-wrapper">
+      <input
+        type="text"
+        id="search-input"
+        [ngModel]="busqueda()"
+        (ngModelChange)="busqueda.set($event)"
+        (keydown.enter)="buscar()"
+        (focus)="onInputFocus()"
+        (blur)="onInputBlur()"
+        placeholder="Busca un Pokémon (ej: pikachu, 25)..."
+        class="search-input"
+        autocomplete="off">
+        
+      @if (showSuggestions() && filteredSuggestions().length > 0) {
+        <div class="suggestions-box glass-panel fade-in">
+          @for (s of filteredSuggestions(); track s.id) {
+            <div class="suggestion-item" (click)="navegar(s.id)">
+              <span class="s-name">{{ s.nombre }}</span>
+              <span class="s-id">#{{ s.id }}</span>
+            </div>
+          }
+        </div>
+      }
+    </div>
     <button (click)="buscar()" class="search-button">Buscar</button>
   </div>
 </nav>

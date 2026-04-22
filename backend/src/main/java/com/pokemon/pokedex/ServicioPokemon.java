@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 public class ServicioPokemon {
 
     private final RestClient restClient;
+    private List<SuggestionDTO> cacheSugerencias = null;
 
     public ServicioPokemon() {
         this.restClient = RestClient.create("https://pokeapi.co/api/v2/");
@@ -239,6 +240,45 @@ public class ServicioPokemon {
 
         lista.sort(Comparator.comparing(MiniPokemon::getId));
         return lista;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // ENDPOINT 4: Sugerencias para Autocompletado
+    // ─────────────────────────────────────────────────────────────────────────
+    @SuppressWarnings("unchecked")
+    public List<SuggestionDTO> obtenerSugerencias() {
+        if (this.cacheSugerencias != null) return this.cacheSugerencias;
+
+        try {
+            Map<String, Object> response = this.restClient.get()
+                    .uri("pokemon-species?limit=2000")
+                    .retrieve()
+                    .body(Map.class);
+
+            List<Map<String, String>> results = (List<Map<String, String>>) response.get("results");
+            List<SuggestionDTO> sugerencias = new ArrayList<>();
+
+            for (Map<String, String> res : results) {
+                String name = res.get("name");
+                String url  = res.get("url");
+                
+                // Parseo robusto del ID (maneja slash final)
+                // URL: https://pokeapi.co/api/v2/pokemon-species/1/
+                String[] parts = url.split("/");
+                // Si la URL termina en /, el último elemento del split será "", el ID estará en el penúltimo
+                String idStr = parts[parts.length - 1].isEmpty() ? parts[parts.length - 2] : parts[parts.length - 1];
+                Integer id = Integer.parseInt(idStr);
+                
+                sugerencias.add(new SuggestionDTO(id, capitalizar(name)));
+            }
+
+            this.cacheSugerencias = sugerencias;
+            return sugerencias;
+            
+        } catch (Exception e) {
+            System.err.println("Error al cargar sugerencias: " + e.getMessage());
+            return new ArrayList<>();
+        }
     }
 
     // ─────────────────────────────────────────────────────────────────────────

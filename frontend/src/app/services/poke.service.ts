@@ -9,6 +9,11 @@ export interface MiniPokemon {
   imagen: string;
 }
 
+export interface SuggestionDTO {
+  id: number;
+  nombre: string;
+}
+
 export interface ModeloHabilidad {
   nombre: string;
   nombreOriginal: string;
@@ -74,5 +79,9 @@ export class PokeService {
 
   getTraduccionesTipos(): Observable<{ [key: string]: string }> {
     return this.http.get<{ [key: string]: string }>(`${this.apiUrl}/tipos/traducciones`);
+  }
+
+  getSuggestions(): Observable<SuggestionDTO[]> {
+    return this.http.get<SuggestionDTO[]>(`${this.apiUrl}/suggestions`);
   }
 }
